@@ -10,19 +10,25 @@ test("format: credits use 亿/万 units", () => {
   assert.equal(formatCredits(0), "0");
 });
 
-test("format: period parses UTC strings and counts days left", () => {
-  const now = Date.UTC(2026, 10, 20, 12, 0, 0); // 2026-11-20
-  const period = formatPeriod("2026-11-01 00:15:42", "2026-12-01 15:59:59", now);
+test("format: period keeps platform strings verbatim and counts days left", () => {
+  const now = new Date(2026, 10, 20, 12, 0, 0).getTime(); // local 2026-11-20
+  const period = formatPeriod("2026-11-01 08:15:42", "2026-12-01 23:59:59", now);
   assert.equal(period.valid, true);
-  assert.equal(period.daysLeft, 12); // 2026-12-01 minus 2026-11-20
-  assert.ok(period.label.includes("11-01"));
-  assert.ok(period.label.includes("12-01"));
+  assert.equal(period.startAt, "2026-11-01 08:15:42", "platform strings must not be shifted");
+  assert.equal(period.endAt, "2026-12-01 23:59:59");
+  assert.equal(period.daysLeft, 12);
+  assert.equal(period.expired, false);
 });
 
-test("format: period falls back to raw strings when unparseable", () => {
-  const period = formatPeriod("n/a", "later", Date.now());
-  assert.equal(period.valid, false);
-  assert.equal(period.daysLeft, null);
+test("format: period marks expiry and falls back to raw strings", () => {
+  const past = new Date(2027, 0, 1).getTime();
+  const expired = formatPeriod("2026-11-01 08:15:42", "2026-12-01 23:59:59", past);
+  assert.equal(expired.expired, true);
+  assert.equal(expired.daysLeft, 0);
+  const raw = formatPeriod("n/a", "later", Date.now());
+  assert.equal(raw.valid, false);
+  assert.equal(raw.daysLeft, null);
+  assert.equal(raw.endAt, "later");
 });
 
 test("format: usage percent stays clamped and precise", () => {

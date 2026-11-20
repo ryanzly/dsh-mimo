@@ -1,6 +1,15 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { KNOWN_MODELS, MimoClient, keyKind, normalizeBase, resolveBaseUrl, wavSeconds } from "../lib/mimo-api.js";
+import { KNOWN_MODELS, MimoClient, keyKind, modelKind, normalizeBase, resolveBaseUrl, wavSeconds } from "../lib/mimo-api.js";
+
+test("api: modelKind separates chat models from voice models", () => {
+  assert.equal(modelKind("mimo-v2.6-pro"), "llm");
+  assert.equal(modelKind("mimo-v2.6-flash"), "llm");
+  assert.equal(modelKind("mimo-v2.5-asr"), "asr");
+  assert.equal(modelKind("mimo-v2.5-tts"), "tts");
+  assert.equal(modelKind("mimo-v2.5-tts-voiceclone"), "tts");
+  assert.equal(modelKind("mimo-v2.5-tts-voicedesign"), "tts");
+});
 
 test("api: base URL resolution follows the key shape", () => {
   assert.equal(resolveBaseUrl({ apiKey: "sk-abc" }), "https://api.xiaomimimo.com/v1");
@@ -30,12 +39,13 @@ test("api: listModels maps live discovery and caches", async () => {
     fetcher: async (url) => {
       calls += 1;
       assert.ok(String(url).endsWith("/models"));
-      return jsonResponse({ object: "list", data: [{ id: "mimo-v2.6-pro" }, { id: "mimo-v2.6-flash" }] });
+      return jsonResponse({ object: "list", data: [{ id: "mimo-v2.6-pro" }, { id: "mimo-v2.6-flash" }, { id: "mimo-v2.5-asr" }, { id: "mimo-v2.5-tts" }] });
     }
   });
   const first = await client.listModels({ force: true, now: 1000 });
   assert.equal(first.source, "live");
-  assert.deepEqual(first.models.map(m => m.id), ["mimo-v2.6-pro", "mimo-v2.6-flash"]);
+  assert.deepEqual(first.models.map(m => m.id), ["mimo-v2.6-pro", "mimo-v2.6-flash", "mimo-v2.5-asr", "mimo-v2.5-tts"]);
+  assert.deepEqual(first.models.map(m => m.kind), ["llm", "llm", "asr", "tts"]);
   const second = await client.listModels({ now: 2000 });
   assert.equal(calls, 1, "second read must hit the cache");
 });

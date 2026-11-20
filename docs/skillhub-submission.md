@@ -39,9 +39,13 @@ MiMo ASR 语音输入（云端识别源）与 MiMo TTS 语音输出（试听 / �
 
 ## 提交渠道
 
-| 渠道 | 方式 |
-| --- | --- |
-| SkillHub 插件市场 | 按站点「提交插件」流程 / 对目录仓库开 PR，粘贴上方收录说明 |
-| 1024store | 带 `dsh-plugin` 话题的公开仓库会被自动收录；也可对目录仓库开 PR 加速 |
-| DSH「发现」页 | 添加索引源 URL（见上表），即可搜索安装 |
-| 社区索引 | awesome-deepseek-harness / Oh-My-DSH / dsh-market 等目录开 PR |
+| 渠道 | 方式 | 状态 |
+| --- | --- | --- |
+| GitHub 仓库 | 公开 + `dsh-plugin` 话题 + Release v0.1.0（含 tgz） | ✅ 已完成 |
+| dshfind 等自动目录 | 打 `dsh-plugin` 话题后自动扫描 | ⏳ 等待同步 |
+| DSH「发现」页 | 添加索引源 `https://raw.githubusercontent.com/ryanzly/dsh-mimo/main/market/index.json` | ✅ 索引已上线 |
+| 1024Store（deepseek1024.com） | 对 `imsai-sh/awesome-deepseek-harness-plugins` 开 PR：复制 [listing/1024store-catalog.json](listing/1024store-catalog.json) 为 `catalog/plugins/ryanzly--dsh-mimo.json` | 📄 材料就绪 |
+| awesome-dsh-plugin（awesome-dsh-plugin.com） | 对 `awesome-dsh-plugin/awesome-dsh-plugin` 开 PR：复制 [listing/awesome-dsh-plugin-entry.yml](listing/awesome-dsh-plugin-entry.yml) 为 `data/plugins/ryanzly__dsh-mimo.yml` 并按其脚本重新生成 README（注意：该目录要求仓库 ≥1 天且 ≥10 提交，可稍后再提） | 📄 材料就绪 |
+| SkillHub（skillhub.cn / skill.xfyun.cn） | 公开仓库 + 话题 + npm 包会被目录收录；npm 发布需要 npm token（`npm publish`，包内 `files` 已限定） | ⏳ 待 npm 发布 |
+
+PR 正文可直接使用上方「收录说明」。

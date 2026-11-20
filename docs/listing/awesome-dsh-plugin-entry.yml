@@ -1,0 +1,6 @@
+url: https://github.com/ryanzly/dsh-mimo
+name: ryanzly/dsh-mimo
+category: provider
+description:
+  en: 'Xiaomi MiMo Coding Plan / Token Plan provider: OAuth sign-in with encrypted callback or quick key paste, live model discovery with adaptive reasoning levels, plan-credits pill and quota tool, MiMo ASR voice input and MiMo TTS read-aloud.'
+  zh: 'Xiaomi MiMo Coding Plan / Token Plan 接入：OAuth 加密回调登录或快捷粘贴密钥，模型自动发现与自适应推理档位，套餐余量药丸与额度工具，MiMo ASR 语音输入与 TTS 朗读。'

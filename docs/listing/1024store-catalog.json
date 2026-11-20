@@ -1,0 +1,12 @@
+{
+  "$schema": "../schema/plugin.schema.json",
+  "id": "ryanzly/dsh-mimo",
+  "name": "dsh-mimo",
+  "repository": "https://github.com/ryanzly/dsh-mimo",
+  "category": "dev",
+  "description": {
+    "en": "Xiaomi MiMo Coding Plan / Token Plan provider for DeepSeek Harness: browser OAuth sign-in with the MiMo Code encrypted-callback protocol or quick tp-/ttp-/sk- key paste, live model discovery with per-model adaptive reasoning levels, Token Plan credits pill plus the mimo_quota tool, MiMo ASR as a cloud voice-input recognizer and MiMo TTS for read-aloud, encrypted-at-rest credentials, Web and Desktop.",
+    "zh": "把 Xiaomi MiMo Coding Plan / Token Plan 接入 DeepSeek Harness：浏览器 OAuth 授权登录（MiMo Code 加密回调协议）或快捷粘贴 tp-/ttp-/sk- 密钥；模型自动发现、按模型自适应推理档位；套餐余量药丸与 mimo_quota 工具；MiMo ASR 云端语音输入、MiMo TTS 朗读；凭据加密落盘，Web 与 Desktop 双端。"
+  },
+  "added": "2026-11-20"
+}

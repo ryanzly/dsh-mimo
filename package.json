@@ -43,11 +43,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zhangly/dsh-mimo.git"
+    "url": "git+https://github.com/ryanzly/dsh-mimo.git"
   },
-  "homepage": "https://github.com/zhangly/dsh-mimo#readme",
+  "homepage": "https://github.com/ryanzly/dsh-mimo#readme",
   "bugs": {
-    "url": "https://github.com/zhangly/dsh-mimo/issues"
+    "url": "https://github.com/ryanzly/dsh-mimo/issues"
   },
   "peerDependencies": {
     "@deepseek-ai/dsh": ">=0.2.0-rc.1 <0.3.0-0",

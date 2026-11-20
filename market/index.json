@@ -1,0 +1,40 @@
+{
+  "format": 1,
+  "title": "dsh-mimo 插件市场索引",
+  "description": "Xiaomi MiMo Coding Plan / Token Plan for DeepSeek Harness：git 分发索引，每个版本固定到仓库的一个 commit。",
+  "metadata": {},
+  "plugins": [
+    {
+      "name": "dsh-mimo",
+      "title": "MiMo Coding Plan",
+      "description": "Xiaomi MiMo Coding Plan / Token Plan provider for DeepSeek Harness: OAuth or API-key sign-in, live model discovery, adaptive reasoning levels, plan-quota pill, MiMo ASR voice input and MiMo TTS voice output.",
+      "repository": "https://github.com/ryanzly/dsh-mimo",
+      "homepage": "https://github.com/ryanzly/dsh-mimo#readme",
+      "metadata": {
+        "keywords": [
+          "dsh",
+          "dsh-plugin",
+          "dsh-client-plugin",
+          "mimo",
+          "xiaomi",
+          "token-plan",
+          "coding-plan",
+          "llm-provider",
+          "asr",
+          "tts"
+        ]
+      },
+      "versions": [
+        {
+          "version": "0.1.0",
+          "publishTimestamp": 1795184417,
+          "source": {
+            "type": "git",
+            "url": "https://github.com/ryanzly/dsh-mimo",
+            "commit": "0071d346a00b4af1128177f71fc163ac4849dd44"
+          }
+        }
+      ]
+    }
+  ]
+}

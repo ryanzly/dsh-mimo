@@ -122,6 +122,21 @@ test("adapter: stream maps reasoning, text, tool calls and usage", async () => {
   assert.equal(blocks[2].arguments, "{}");
 });
 
+test("adapter: resolveModel always carries context capacity", async () => {
+  const client = new MimoClient({
+    apiKey: "tp-1",
+    baseUrl: "https://token-plan-cn.xiaomimimo.com/v1",
+    fetcher: async () => jsonResponse({ object: "list", data: [{ id: "mimo-v2.6-pro-ultraspeed" }] })
+  });
+  const adapter = new MimoAdapter({ client: () => client, defaultThinking: () => "high" });
+  const info = await adapter.resolveModel("xiaomi-mimo", "mimo-v2.6-pro-ultraspeed");
+  assert.equal(info.context.contextWindow, 1000000);
+  assert.equal(info.defaultMaxTokens, 131072);
+  assert.equal(info.reasoning.defaultEffort, "high");
+  const custom = await adapter.resolveModel("xiaomi-mimo", "totally-unknown-model");
+  assert.equal(custom.context.contextWindow > 0, true, "unknown models still need a context window");
+});
+
 test("adapter: stream sets thinking from the effort and reports auth failures", async () => {
   let captured;
   const client = new MimoClient({

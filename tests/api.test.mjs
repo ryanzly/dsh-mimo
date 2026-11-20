@@ -1,6 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { KNOWN_MODELS, MimoClient, keyKind, modelKind, normalizeBase, resolveBaseUrl, wavSeconds } from "../lib/mimo-api.js";
+import { KNOWN_MODELS, MimoClient, keyKind, modelCapacity, modelKind, normalizeBase, resolveBaseUrl, wavSeconds } from "../lib/mimo-api.js";
+
+test("api: modelCapacity fills undescribed models so routing works", () => {
+  assert.deepEqual(modelCapacity("mimo-v2.6-pro-ultraspeed"), { contextWindow: 1000000, maxTokens: 131072 });
+  assert.deepEqual(modelCapacity("mimo-v2.6-flash"), { contextWindow: 1000000, maxTokens: 131072 });
+  assert.equal(modelCapacity("some-custom-model").contextWindow > 0, true);
+});
 
 test("api: modelKind separates chat models from voice models", () => {
   assert.equal(modelKind("mimo-v2.6-pro"), "llm");

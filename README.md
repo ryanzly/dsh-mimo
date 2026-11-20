@@ -10,11 +10,11 @@
 | --- | --- |
 | 模型路由 `xiaomi-mimo` | OpenAI 兼容 Chat Completions 流式协议；tp-/ttp- 密钥自动路由到 Token Plan 集群（cn/sgp/ams），sk- 密钥走按量 API |
 | 快捷登录 | **OAuth 一键授权**（与 MiMo Code 同协议，X25519 加密回调，自动创建 API Key）；手动粘贴 `tp-` / `ttp-` 密钥折叠为高级项 |
-| 套餐余量 | `GET /v1/platform/token_plan`：剩余积分（亿/万单位 + 百分比）、本周期用量、到期时间（平台原值，带倒计时）；**侧栏底部快捷余量**（宽栏百分比 / 窄栏角标）+ 输入区药丸 + 设置页 + `mimo_quota` 工具 |
+| 套餐余量 | `GET /v1/platform/token_plan`：剩余积分（亿/万单位 + 百分比）、本周期用量、到期时间（平台原值，带倒计时）；**侧栏底部快捷余量**（宽栏百分比 / 窄栏角标）+ 设置页 + `mimo_quota` 工具；**套餐相关入口登录后才展示** |
 | 模型自动更新 | `GET /v1/models` 实时发现（5 分钟缓存），失败时回退到内置目录并在界面标注来源，不冒充实时 |
 | 自适应推理等级 | 按模型能力暴露思考档位：`off / low / medium / high`，映射到 MiMo `thinking` 开关（见下方诚实说明） |
 | 语音输入 | MiMo ASR（`mimo-v2.5-asr`）注册到 DSH 官方「语音输入」插件的识别来源列表，云端转写 |
-| 语音输出 | MiMo TTS（`mimo-v2.5-tts` 系列）：设置页试听、输入区 🔊 朗读选中文字，支持音色与自然语言风格指令 |
+| 语音输出 | MiMo TTS（`mimo-v2.5-tts` 系列）：设置页试听、选中文字「朗读」胶囊、每条回复动作行 🔊 朗读整条；支持音色与自然语言风格指令，按句分段、边播边合成 |
 | 凭据安全 | 密钥 AES-256-GCM 加密落盘（`~/.dsh/dsh-mimo.json`，0600），Remote 只暴露掩码预览 |
 
 ## 安装
@@ -38,7 +38,7 @@ dsh plugin --profile web add ./dsh-mimo-plugin
 ## 语音
 
 - **输入**：安装 DSH 官方「语音输入」插件后，在识别来源里选 **MiMo 语音识别（云端）**；识别语言可在本插件设置页选 auto/zh/en。
-- **输出**：全部走 DSH 原生插槽——选中文字后在原生文本交互面（与「引用」同款悬浮胶囊）点「朗读」；每条回复的原生动作行（与反馈按钮同规格图标按钮）有 🔊 朗读整条回复。设置页可选 TTS 模型、**内置音色下拉**（冰糖/茉莉/苏打/白桦/Mia/Chloe/Milo/Dean）与风格指令，并可试听。
+- **输出**：全部走 DSH 原生插槽——选中文字后的悬浮胶囊是 **「引用 + 朗读」**（用 DSH 影子机制在 quote 单元格合并官方 message-quotes 胶囊；官方插件缺席时退回本插件自己的胶囊，右键选中文字也可唤起）；每条回复的原生动作行（与反馈按钮同规格图标按钮）有 🔊 朗读整条回复。设置页可选 TTS 模型、**内置音色下拉**（冰糖/茉莉/苏打/白桦/Mia/Chloe/Milo/Dean）与风格指令，并可试听。合成音频一律以 wav 出货（平台的 mp3/pcm 裸流浏览器播不了），朗读失败会在按钮上直接报错，不再静默。
 
 ## 关于推理档位的诚实说明
 
@@ -82,6 +82,6 @@ MIT
 - **Sign-in**: browser OAuth (same encrypted-callback protocol as MiMo Code) or quick paste of `tp-` / `ttp-` / `sk-` keys; credentials encrypted at rest on the Host.
 - **Plan credits**: live `/v1/platform/token_plan` quota in a pill next to the model selector, a settings page, and the `mimo_quota` agent tool.
 - **Models**: auto-discovered via `GET /v1/models` with an honest cached fallback; reasoning levels adapt per model (MiMo deep thinking is an on/off switch today — `off` disables it, `low/medium/high` all enable it; the UI says so).
-- **Voice**: MiMo ASR (`mimo-v2.5-asr`) appears as a cloud recognizer in the official Voice input plugin; MiMo TTS (`mimo-v2.5-tts` family) powers a preview button and a read-selection-aloud button.
+- **Voice**: MiMo ASR (`mimo-v2.5-asr`) appears as a cloud recognizer in the official Voice input plugin; MiMo TTS (`mimo-v2.5-tts` family) powers a settings preview, a combined Quote + Read-aloud selection capsule, and a per-message read-aloud button. Audio ships as playable WAV.
 
 `npm test` runs the suite against stubbed DSH peer packages. MIT licensed.

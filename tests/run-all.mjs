@@ -44,6 +44,6 @@ for (const [packageName, source] of Object.entries(stubs)) {
   writeFileSync(join(dir, "index.js"), source);
 }
 
-const testFiles = ["settings.test.mjs", "auth.test.mjs", "api.test.mjs", "adapter.test.mjs", "format.test.mjs"].map(file => join(root, "tests", file));
+const testFiles = ["settings.test.mjs", "auth.test.mjs", "api.test.mjs", "adapter.test.mjs", "format.test.mjs", "think-split.test.mjs", "speak.test.mjs"].map(file => join(root, "tests", file));
 const result = spawnSync(process.execPath, ["--test", "--test-force-exit", ...testFiles], { stdio: "inherit" });
 process.exit(result.status ?? 1);

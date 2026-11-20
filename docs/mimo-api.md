@@ -50,6 +50,7 @@
 - `messages`：`user`（可选，自然语言风格指令；voicedesign 必填）+ `assistant`（**要朗读的文本**）。
 - `audio`：`{ format: wav|mp3|pcm|pcm16, voice?: ... }`。
 - 返回 `choices[0].message.audio.data`（base64）；流式需 pcm16 拼接。
+- **格式实测（2026-11）**：只有 `wav` 是带 RIFF 头的成品（24 kHz 单声道 PCM16），浏览器 `<audio>` 可直接播；`mp3` 实际返回 ADTS/AAC 裸流（0xFF 0xFx 帧头）、`pcm`/`pcm16` 返回无头小端 PCM16，都播不了。插件的 speak 一律按 `wav` 出货。
 
 ## OAuth（浏览器授权，同 MiMo Code）
 

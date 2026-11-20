@@ -16,8 +16,11 @@
 └────────────────────────────────────────────────────────────────────────────┘
           ▲ typert Remote（dsh-mimo#mimo/*，9 个 direct invocation）
 ┌─────────────────────────── Client（lib/client.js） ────────────────────────┐
-│ settings.section   登录 / 密钥 / 余量 / 模型 / 思考档位 / 语音             │
-│ conversation.input.right   余量药丸（选中 MiMo 模型时）+ 🔊 朗读选中文字   │
+│ settings.section            登录 / 密钥 / 余量（登录后）/ 模型 / 语音      │
+│ sidebar.footer.action       侧栏快捷余量（登录后才展示，点击展开详情）      │
+│ conversation.input.model.options  推理滑条（仅选中 MiMo 模型时）           │
+│ conversation.chat.text-interaction  选中文字「引用 + 朗读」悬浮胶囊        │
+│ conversation.chat.assistant-actions 每条回复动作行 🔊 朗读整条             │
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -30,7 +33,7 @@
 | `models` | — | 实时/回退模型列表（含 source） |
 | `quota` | — | 强制刷新后的 status |
 | `login` / `loginStatus` / `loginSubmit` / `cancelLogin` | `code`（手动授权码） | 登录态（含手动链接） |
-| `speak` | `{ text, voice?, style?, format?, model? }` | base64 音频 + 格式 |
+| `speak` | `{ text, voice?, style?, model? }`（`format` 忽略，一律 wav） | base64 wav 音频 + 格式 |
 
 两端的 descriptor 表逐字对齐（`lib/index.js` 的 `mimoRemote` 与 `lib/client.js`
 内的同名对象）；codec 是形状校验器（`{ mode:"strict", typeSymbol, schema:{parse}, create }`）。
@@ -46,6 +49,13 @@
    reasoning_content 在多轮工具调用历史中回传（平台硬性要求）。
 5. **语音**：ASR 是 `ctx.speechToText` 的云端 provider（弱依赖，语音输入插件未装则不注册）；
    TTS 走 Remote 由浏览器 `Audio` 播放（Host 无音频输出能力，不假装播放）。
+   一律以 wav 出货：平台的 `mp3` 实际是 ADTS/AAC 裸流、`pcm*` 是无头 PCM16，
+   浏览器播不了；朗读按句分段、边播边合成下一段，失败直接显示在按钮上。
+6. **选中文字胶囊与官方「引用」共存**：DSH 的文本交互面每次手势只渲染
+   胜出者的 keyed 条目，而官方 message-quotes 先注册、稳赢 selection 手势。
+   因此本插件用 DSH 的影子机制（同 key 不同 priority，最低者渲染）在
+   `quote` 单元格合并出「引用 + 朗读」胶囊；官方插件缺席时退回自己的
+   `mimo-speak` 单元格（含右键手势兜底），两套场景都有完整功能。
 
 ## 测试
 

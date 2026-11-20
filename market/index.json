@@ -31,7 +31,7 @@
           "source": {
             "type": "git",
             "url": "https://github.com/ryanzly/dsh-mimo",
-            "commit": "38696d585c7c7ea96de0c0e4dcc5a31fc06006e3"
+            "commit": "0c8d8962fbf2ae4084387304518c1701de649dd2"
           }
         }
       ]

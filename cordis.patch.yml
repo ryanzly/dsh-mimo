@@ -1,0 +1,17 @@
+# dsh-mimo —— Xiaomi MiMo Coding Plan / Token Plan 接入。
+#
+# Host（lib/index.js，一行同时装配全部宿主能力）：
+#   - LLM 适配器：provider 路由 xiaomi-mimo，OpenAI 兼容 Chat Completions 流式协议，
+#     GET /v1/models 自动发现模型，按模型能力自适应暴露思考档位。
+#   - 登录与凭据：OAuth 浏览器授权（X25519 加密回调，与 MiMo Code 同协议）或快捷粘贴
+#     tp-/ttp-/sk- 密钥；凭据加密落盘在 ~/.dsh/dsh-mimo.json。
+#   - 套餐余量：GET /v1/platform/token_plan，Remote + mimo_quota 工具。
+#   - 语音：MiMo ASR 注册到 ctx.speechToText（云端识别），MiMo TTS 经 Remote 供客户端朗读。
+#
+# Client（lib/client.js，dsh.client 声明自动装载）：
+#   - 设置页：登录卡片、密钥快捷配置、余量、模型列表、语音与思考设置。
+#   - 余量药丸：conversation.input.right，选中 MiMo 模型时显示套餐余量。
+#   - 朗读：会话输入区按钮 + 自动朗读开关（MiMo TTS）。
+- insert:
+    - id: mimo
+      name: dsh-mimo

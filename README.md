@@ -9,8 +9,8 @@
 | 能力 | 说明 |
 | --- | --- |
 | 模型路由 `xiaomi-mimo` | OpenAI 兼容 Chat Completions 流式协议；tp-/ttp- 密钥自动路由到 Token Plan 集群（cn/sgp/ams），sk- 密钥走按量 API |
-| 快捷登录 | **浏览器 OAuth 授权**（与 MiMo Code 同协议，X25519 加密回调，自动创建 API Key）或直接粘贴 `tp-` / `ttp-` / `sk-` 密钥 |
-| 套餐余量 | `GET /v1/platform/token_plan`：周期积分总额/已用/剩余、有效期、自动续费；输入区**余量药丸** + 设置页明细 + `mimo_quota` 工具 |
+| 快捷登录 | **OAuth 一键授权**（与 MiMo Code 同协议，X25519 加密回调，自动创建 API Key）；手动粘贴 `tp-` / `ttp-` 密钥折叠为高级项 |
+| 套餐余量 | `GET /v1/platform/token_plan`：剩余积分（亿/万单位 + 百分比）、本周期用量、有效期与剩余天数（UTC 换算本地日历）；输入区**余量药丸** + 设置页 + `mimo_quota` 工具 |
 | 模型自动更新 | `GET /v1/models` 实时发现（5 分钟缓存），失败时回退到内置目录并在界面标注来源，不冒充实时 |
 | 自适应推理等级 | 按模型能力暴露思考档位：`off / low / medium / high`，映射到 MiMo `thinking` 开关（见下方诚实说明） |
 | 语音输入 | MiMo ASR（`mimo-v2.5-asr`）注册到 DSH 官方「语音输入」插件的识别来源列表，云端转写 |
@@ -38,7 +38,7 @@ dsh plugin --profile web add ./dsh-mimo-plugin
 ## 语音
 
 - **输入**：安装 DSH 官方「语音输入」插件后，在识别来源里选 **MiMo 语音识别（云端）**；识别语言可在本插件设置页选 auto/zh/en。
-- **输出**：设置页可选 TTS 模型（`mimo-v2.5-tts` / `-voicedesign` / `-voiceclone`）、音色与风格指令（自然语言，如「温柔的女声，语速稍快」）；输入区 🔊 按钮朗读当前选中的文字。
+- **输出**：全部走 DSH 原生插槽——选中文字后在原生文本交互面（与「引用」并排）点「朗读」；每条回复的原生动作行（与反馈按钮并排）有 🔊 朗读整条回复。设置页可选 TTS 模型（`mimo-v2.5-tts` / `-voicedesign` / `-voiceclone`）、音色与风格指令（自然语言，如「温柔的女声，语速稍快」），并可试听。
 
 ## 关于推理档位的诚实说明
 

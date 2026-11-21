@@ -46,6 +46,6 @@ MiMo ASR 语音输入（云端识别源）与 MiMo TTS 语音输出（试听 / �
 | DSH「发现」页 | 添加索引源 `https://raw.githubusercontent.com/ryanzly/dsh-mimo/main/market/index.json` | ✅ 索引已上线 |
 | 1024Store（deepseek1024.com） | 对 `imsai-sh/awesome-deepseek-harness-plugins` 开 PR：复制 [listing/1024store-catalog.json](listing/1024store-catalog.json) 为 `catalog/plugins/ryanzly--dsh-mimo.json` | 📄 材料就绪 |
 | awesome-dsh-plugin（awesome-dsh-plugin.com） | 对 `awesome-dsh-plugin/awesome-dsh-plugin` 开 PR：复制 [listing/awesome-dsh-plugin-entry.yml](listing/awesome-dsh-plugin-entry.yml) 为 `data/plugins/ryanzly__dsh-mimo.yml` 并按其脚本重新生成 README（注意：该目录要求仓库 ≥1 天且 ≥10 提交，可稍后再提） | 📄 材料就绪 |
-| SkillHub（skillhub.cn / skill.xfyun.cn） | 公开仓库 + 话题 + npm 包会被目录收录；npm 发布需要 npm token（`npm publish`，包内 `files` 已限定，`npm publish --dry-run` 已通过） | ⏳ 待 npm 发布（缺 npm 登录） |
+| SkillHub（skillhub.cn / skill.xfyun.cn） | 公开仓库 + 话题 + npm 包会被目录收录；npm 已发布（`npm publish` 0.1.1，包内 `files` 已限定） | ✅ 已发布，等目录收录 |
 
 PR 正文可直接使用上方「收录说明」。

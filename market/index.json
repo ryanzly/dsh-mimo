@@ -26,12 +26,12 @@
       },
       "versions": [
         {
-          "version": "0.1.2",
-          "publishTimestamp": 1795252525,
+          "version": "0.1.3",
+          "publishTimestamp": 1795273954,
           "source": {
             "type": "git",
             "url": "https://github.com/ryanzly/dsh-mimo",
-            "commit": "3000b9275718c1ceff356d2aafdfee6c1b42a05a"
+            "commit": "f6ee353e2562151fc4738394e014a836b6b147a2"
           }
         }
       ]

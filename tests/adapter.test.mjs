@@ -16,6 +16,8 @@ test("adapter: effort ladder adapts onto the thinking switch", () => {
   assert.equal(thinkingTypeFor("off"), "disabled");
   assert.equal(thinkingTypeFor("none"), "disabled");
   assert.equal(thinkingTypeFor(""), "disabled");
+  assert.equal(thinkingTypeFor("default"), "disabled");
+  assert.equal(thinkingTypeFor("Default"), "disabled");
   assert.equal(thinkingTypeFor("low"), "enabled");
   assert.equal(thinkingTypeFor("high"), "enabled");
 });
@@ -137,6 +139,30 @@ test("adapter: resolveModel always carries context capacity", async () => {
   assert.equal(custom.context.contextWindow > 0, true, "unknown models still need a context window");
 });
 
+test("adapter: default effort keeps a leaked thought out of the answer", async () => {
+  const close = "</think>";
+  const events = [
+    JSON.stringify({ choices: [{ delta: { content: "先把 17*23 算成 391" + close + "391" }, finish_reason: "stop" }] }),
+    "[DONE]"
+  ];
+  let captured;
+  const client = new MimoClient({
+    apiKey: "tp-1",
+    baseUrl: "https://token-plan-cn.xiaomimimo.com/v1",
+    fetcher: async (_url, init) => {
+      captured = JSON.parse(init.body);
+      return { ok: true, status: 200, body: sseBody(events), json: async () => ({}), text: async () => "" };
+    }
+  });
+  const adapter = new MimoAdapter({ client: () => client, defaultThinking: () => "high" });
+  const chunks = [];
+  for await (const chunk of adapter.stream({ provider: "p", model: "mimo-v2.6-pro-ultraspeed", reasoningEffort: "default", messages: [] })) chunks.push(chunk);
+  assert.equal(captured.thinking.type, "disabled");
+  const blocks = chunks.filter(chunk => chunk.type === "block-end").map(chunk => chunk.block);
+  assert.equal(blocks.find(block => block.type === "text")?.text, "391");
+  assert.equal(blocks.find(block => block.type === "reasoning")?.text, "先把 17*23 算成 391");
+});
+
 test("adapter: stream sets thinking from the effort and reports auth failures", async () => {
   let captured;
   const client = new MimoClient({
@@ -152,6 +178,8 @@ test("adapter: stream sets thinking from the effort and reports auth failures", 
     for await (const _ of adapter.stream({ provider: "p", model: "mimo-v2.6-pro", reasoningEffort: effort, messages: [] })) { /* drain */ }
   };
   await consume("off");
+  assert.equal(captured.thinking.type, "disabled");
+  await consume("default");
   assert.equal(captured.thinking.type, "disabled");
   await consume("high");
   assert.equal(captured.thinking.type, "enabled");

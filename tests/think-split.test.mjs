@@ -70,6 +70,12 @@ test("think-split: ambiguous junction resolves as reasoning at a marker", () => 
   assert.equal(out.text, "答案");
 });
 
+test("think-split: disabled thinking holds a bare close tag out of the answer", () => {
+  const out = feed(new ThinkSplitter(false, "", { guardBareClose: true }), ["先想一下", CLOSE, "391"]);
+  assert.equal(out.reasoning, "先想一下");
+  assert.equal(out.text, "391");
+});
+
 test("think-split: explicit open marker starts thinking even without prior reasoning", () => {
   const out = feed(new ThinkSplitter(), ["前言", OPEN, "想", CLOSE, "正文"]);
   assert.equal(out.reasoning, "想");

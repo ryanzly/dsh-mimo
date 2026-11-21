@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { MimoAdapter, modelSupportsThinking, modelSupportsTools, parseSse, thinkingTypeFor, toWireMessages, toWireTools } from "../lib/mimo-adapter.js";
+import { MimoAdapter, THINKING_EFFORTS, defaultEffortFor, modelSupportsThinking, modelSupportsTools, parseSse, thinkingTypeFor, toWireMessages, toWireTools } from "../lib/mimo-adapter.js";
 import { MimoClient } from "../lib/mimo-api.js";
 
 test("adapter: capability detection is per model", () => {
@@ -19,7 +19,14 @@ test("adapter: effort ladder adapts onto the thinking switch", () => {
   assert.equal(thinkingTypeFor("default"), "disabled");
   assert.equal(thinkingTypeFor("Default"), "disabled");
   assert.equal(thinkingTypeFor("low"), "enabled");
+  assert.equal(thinkingTypeFor("minimal"), "enabled");
+  assert.equal(thinkingTypeFor("xhigh"), "enabled");
+  assert.equal(thinkingTypeFor("ultra"), "enabled");
   assert.equal(thinkingTypeFor("high"), "enabled");
+  assert.deepEqual(THINKING_EFFORTS.map(effort => effort.id), ["off", "none", "minimal", "low", "medium", "high", "xhigh", "max", "ultra"]);
+  assert.equal(defaultEffortFor("off"), "none");
+  assert.equal(defaultEffortFor("high"), "high");
+  assert.equal(defaultEffortFor("nope"), "high");
 });
 
 test("adapter: history projection keeps reasoning_content for tool turns", async () => {

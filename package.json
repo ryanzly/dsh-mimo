@@ -1,6 +1,6 @@
 {
   "name": "dsh-mimo",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "displayName": "MiMo Coding Plan",
   "description": "Xiaomi MiMo Coding Plan / Token Plan provider for DeepSeek Harness: OAuth or API-key sign-in, live model discovery, adaptive reasoning levels, plan-quota pill, MiMo ASR voice input and MiMo TTS voice output.",
   "keywords": [

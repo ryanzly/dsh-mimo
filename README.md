@@ -12,7 +12,7 @@
 | 快捷登录 | **OAuth 一键授权**（与 MiMo Code 同协议，X25519 加密回调，自动创建 API Key）；手动粘贴 `tp-` / `ttp-` 密钥折叠为高级项 |
 | 套餐余量 | `GET /v1/platform/token_plan`：剩余积分（亿/万单位 + 百分比）、本周期用量、到期时间（平台原值，带倒计时）；**侧栏底部快捷余量**（宽栏百分比 / 窄栏角标）+ 设置页 + `mimo_quota` 工具；**套餐相关入口登录后才展示** |
 | 模型自动更新 | `GET /v1/models` 实时发现（5 分钟缓存），失败时回退到内置目录并在界面标注来源，不冒充实时 |
-| 自适应推理等级 | 按模型能力暴露思考档位：`off / low / medium / high`，映射到 MiMo `thinking` 开关（见下方诚实说明） |
+| 推理等级 | 输入栏「选择强度」打开 Codex 式宽拉条。思考模型档位是官方取值 `none / minimal / low / medium / high / xhigh / max / ultra`（另保留旧档 `off`）；Chat Completions 仍只映射成思考开/关 |
 | 语音输入 | MiMo ASR（`mimo-v2.5-asr`）注册到 DSH 官方「语音输入」插件的识别来源列表，云端转写 |
 | 语音输出 | MiMo TTS（`mimo-v2.5-tts` 系列）：设置页试听、选中文字「朗读」胶囊、每条回复动作行 🔊 朗读整条；支持音色与自然语言风格指令，按句分段、边播边合成 |
 | 凭据安全 | 密钥 AES-256-GCM 加密落盘（`~/.dsh/dsh-mimo.json`，0600），Remote 只暴露掩码预览 |
@@ -42,7 +42,7 @@ dsh plugin --profile web add ./dsh-mimo-plugin
 
 ## 关于推理档位的诚实说明
 
-MiMo V2.6 的深度思考目前是**开/关**语义（`thinking.type: enabled|disabled`），官方 Responses API 也注明「除 none 外所有档位行为一致」。本插件按模型能力自适应地暴露 `off / low / medium / high` 档位：**`off` 关闭思考，其余档位均开启深度思考**，与平台自身语义一致；界面文案与文档都会明示这一点，不会假装低档位真的更省思考。历史消息中的 `reasoning_content` 会在多轮工具调用时原样回传（平台要求，否则 400）。
+推理等级在输入栏用 Codex 式宽拉条切换，不做成带文字的窄阶梯。思考模型列出官方 `reasoning.effort`：`none / minimal / low / medium / high / xhigh / max / ultra`。`none` 关闭思考；其余档位开启。官方注明这些开启档目前行为一致，`minimal` 映射为 `low`，`xhigh / max / ultra` 映射为 `high`。旧拉条保存的 `off` 仍可选，效果与 `none` 相同。Chat Completions 只收 `thinking.type: enabled|disabled`，不会把档位 id 发给接口。ASR/TTS 没有推理等级。历史消息中的 `reasoning_content` 会在多轮工具调用时原样回传（平台要求，否则 400）。
 
 ## 兼容性
 
@@ -81,7 +81,7 @@ MIT
 
 - **Sign-in**: browser OAuth (same encrypted-callback protocol as MiMo Code) or quick paste of `tp-` / `ttp-` / `sk-` keys; credentials encrypted at rest on the Host.
 - **Plan credits**: live `/v1/platform/token_plan` quota in a pill next to the model selector, a settings page, and the `mimo_quota` agent tool.
-- **Models**: auto-discovered via `GET /v1/models` with an honest cached fallback; reasoning levels adapt per model (MiMo deep thinking is an on/off switch today — `off` disables it, `low/medium/high` all enable it; the UI says so).
+- **Models**: auto-discovered via `GET /v1/models` with an honest cached fallback. Reasoning uses a Codex-style wide slider in the composer and lists MiMo's legal efforts (`none` through `ultra`, plus the old `off` id). Chat Completions still only toggles `thinking.type`.
 - **Voice**: MiMo ASR (`mimo-v2.5-asr`) appears as a cloud recognizer in the official Voice input plugin; MiMo TTS (`mimo-v2.5-tts` family) powers a settings preview, a combined Quote + Read-aloud selection capsule, and a per-message read-aloud button. Audio ships as playable WAV.
 
 `npm test` runs the suite against stubbed DSH peer packages. MIT licensed.

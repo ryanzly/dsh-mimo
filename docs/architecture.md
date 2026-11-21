@@ -18,7 +18,6 @@
 ┌─────────────────────────── Client（lib/client.js） ────────────────────────┐
 │ settings.section            登录 / 密钥 / 余量（登录后）/ 模型 / 语音      │
 │ sidebar.footer.action       侧栏快捷余量（登录后才展示，点击展开详情）      │
-│ conversation.input.model.options  推理滑条（仅选中 MiMo 模型时）           │
 │ conversation.chat.text-interaction  选中文字「引用 + 朗读」悬浮胶囊        │
 │ conversation.chat.assistant-actions 每条回复动作行 🔊 朗读整条             │
 └────────────────────────────────────────────────────────────────────────────┘
@@ -44,8 +43,10 @@
 2. **凭据不进配置**：密钥写入 `~/.dsh/dsh-mimo.json`（加密），`cordis.yml` 不含秘密；
    也兼容环境变量 `MIMO_TOKEN_PLAN_API_KEY` / `MIMO_API_KEY`。
 3. **模型发现诚实**：`/v1/models` 5 分钟缓存；失败回退内置目录并在 UI 标注 `source: fallback`。
-4. **推理档位自适应**：`resolveModel()` 按模型能力返回权威档位表（思考模型
-   off/low/medium/high，ASR/TTS 无档位）；档位映射到 `thinking.type` 开关，
+4. **推理档位**：输入栏「选择强度」用 Codex 式宽拉条切换官方取值（思考模型
+   none/minimal/low/medium/high/xhigh/max/ultra，另保留旧档 off；ASR/TTS 无档位）。
+   `resolveModel()` 仍把同一张表交给宿主，旧会话里的档位不会被拒。
+   Chat Completions 只映射成 `thinking.type` 开关，不发送 `reasoning_effort`。
    reasoning_content 在多轮工具调用历史中回传（平台硬性要求）。
 5. **语音**：ASR 是 `ctx.speechToText` 的云端 provider（弱依赖，语音输入插件未装则不注册）；
    TTS 走 Remote 由浏览器 `Audio` 播放（Host 无音频输出能力，不假装播放）。
